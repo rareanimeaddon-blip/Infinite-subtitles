@@ -29,6 +29,28 @@ subtitles attached by a plugin do not display in the stock app).
   provider quota.
 - **No keys in the code:** keys come from environment variables only.
 
+## Deploy
+
+### Vercel (free, no card, never sleeps)
+
+1. Sign up at https://vercel.com (free Hobby plan, no card).
+2. **Add New → Project → Import Git Repository** → pick
+   `rareanimeaddon-blip/Infinite-subtitles`.
+3. Leave the settings as they are and click **Deploy**.
+4. You get a link like `https://infinite-subtitles.vercel.app`.
+   Open it, enter your keys on the landing page, and you get your
+   personal manifest link to paste in Nuvio / Stremio.
+
+Vercel runs the addon as a serverless function (`api/index.js`, via the
+rewrite in `vercel.json`), so it never sleeps and costs nothing on the
+free plan (100,000 requests/day). No environment variables needed.
+
+### Northflank / Render (plain Node server)
+
+Runs the same code as a long-running server (`node server.js`).
+Northflank's free Sandbox is always-on; Render's free tier sleeps
+after 15 minutes idle. No environment variables needed.
+
 ## Run locally
 
 ```bash

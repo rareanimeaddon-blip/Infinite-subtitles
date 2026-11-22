@@ -12,7 +12,10 @@ var GIST = 'https://gist.githubusercontent.com/rareanimeaddon-blip/6fc363ac74cb8
 function b64url(str) {
   return Buffer.from(str, 'utf8').toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
-require('./server.js');
+var http = require('http');
+var handleRequest = require('./server.js').handleRequest;
+var srv = http.createServer(handleRequest);
+srv.listen(3458);
 (async function () {
   await new Promise(function (res) { setTimeout(res, 800); });
   var base = 'http://localhost:3458';

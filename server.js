@@ -163,7 +163,9 @@ function landingPage(origin, configStr) {
     + '</body></html>';
 }
 
-var server = http.createServer(function (req, res) {
+// Shared request handler — used by the plain Node server below and by
+// the Vercel serverless function in api/index.js.
+function handleRequest(req, res) {
   try {
     var u = new URL(req.url, 'http://localhost');
     var pathname = u.pathname;
@@ -214,10 +216,17 @@ var server = http.createServer(function (req, res) {
   } catch (e) {
     sendJson(res, 500, { subtitles: [] });
   }
-});
+}
 
-var port = parseInt(process.env.PORT, 10) || 3000;
-server.listen(port, function () {
-  console.log('Infinite Streams Subtitles addon listening on port ' + port);
-  console.log('Manifest: http://localhost:' + port + '/manifest.json');
-});
+module.exports = { handleRequest: handleRequest };
+
+// Plain Node server (Northflank / Render / local). Only listens when this
+// file is run directly — requiring it from api/index.js does not start it.
+if (require.main === module) {
+  var server = http.createServer(handleRequest);
+  var port = parseInt(process.env.PORT, 10) || 3000;
+  server.listen(port, function () {
+    console.log('Infinite Streams Subtitles addon listening on port ' + port);
+    console.log('Manifest: http://localhost:' + port + '/manifest.json');
+  });
+}
