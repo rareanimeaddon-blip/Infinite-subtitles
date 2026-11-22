@@ -575,15 +575,10 @@ function handleRequest(req, res) {
 
 
 // ---- Vercel handler ----
+// vercel.json rewrites every request to /api/index; Vercel passes the
+// ORIGINAL request path in req.url, so just hand it to the handler.
 module.exports = function (req, res) {
   try {
-    var u = new URL(req.url, 'http://localhost');
-    var orig = u.searchParams.get('__path');
-    if (orig !== null && orig !== undefined) {
-      var p = '/' + String(orig);
-      try { p = decodeURIComponent(p); } catch (e) { /* keep as-is */ }
-      req.url = p;
-    }
     handleRequest(req, res);
   } catch (e) {
     try { res.writeHead(500, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ subtitles: [] })); } catch (e2) {}
