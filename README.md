@@ -33,25 +33,35 @@ subtitles attached by a plugin do not display in the stock app).
 
 ```bash
 npm start
+# Landing page: http://localhost:3000/
 # Manifest: http://localhost:3000/manifest.json
 ```
 
-Set the keys first (see below). Without keys, SubDL and Wyzie return
-nothing and only the mirror + Sunsync work.
+## How users set up their own API keys
 
-## Environment variables
+Each user sets up their own keys — nothing is stored on the server:
+
+1. Open the landing page (`/`).
+2. Enter their own SubDL and Wyzie API keys (free keys from
+   https://subdl.com and https://wyzie.io).
+3. The page gives them a personal manifest link:
+   `https://<host>/<config>/manifest.json` — the keys are encoded in
+   the link itself.
+4. They paste that link into Nuvio / Stremio under Addons.
+
+Keep the manifest link private: it contains the keys, and anyone with
+it can use them. The plain `/manifest.json` (no config) works too, but
+only with OpenSubtitles + pre-synced subtitles — no SubDL or Wyzie.
+
+## Environment variables (optional server-side fallback)
 
 | Variable | Required | Notes |
 |---|---|---|
-| `SUBDL_API_KEY` | yes | Free key from subdl.com |
+| `SUBDL_API_KEY` | no | Host operator's key, used when a request has no config key |
 | `SUBDL_API_KEY2` | no | Second key, tried if the first fails |
-| `WYZIE_API_KEY` | yes | Free key from wyzie.io |
+| `WYZIE_API_KEY` | no | Host operator's key |
 | `WYZIE_API_KEY2` | no | Second key, tried if the first fails |
 | `PORT` | no | Default `3000` |
-| `PUBLIC_URL` | no | Public base URL, shown on the landing page |
-
-Get free keys: SubDL at https://subdl.com (2000 searches/day/key),
-Wyzie at https://wyzie.io (1000 requests/day/key).
 
 ## Deploy
 
